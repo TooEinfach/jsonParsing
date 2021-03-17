@@ -10,6 +10,7 @@ with open('data.json', 'r')  as file:
     
     licenseNumber = []
 
+    # Using Pandas to write the Monthly excel file requested
     df_json = pd.read_json('data.json')
     df_json.to_excel('Monthly.xlsx')
 
@@ -17,16 +18,11 @@ with open('data.json', 'r')  as file:
         newList.append(i)
         
         
-        # for j in newList:
-        #     for c in j: 
-        #         licenseNumber.append(c)
-        #         print(licenseNumber)
-            
+# Writing license and account number to test file.  Also writing Monthly test csv file  
 with open('daily_test.txt', 'w') as newFile:
     total = 0
     for i in newList:
         total = total + 1
-        # input()
     count = 0
     while count < total:
         list1 = newList[count]
@@ -50,55 +46,38 @@ with open('daily_test.txt', 'w') as newFile:
     for i in submitted_data:
         lineData = i.values()
         csv_writer.writerow(lineData)
+
+
+# writting daily file in format that is need to upload into css
 with open('daily.txt', 'w') as newFile:
     total = 0
     for i in newList:
         total = total + 1
-        # input()
     count = 0
     while count < total:
         list1 = newList[count]
-        newFile.write(list1['LicenseNo'])
-        newFile.write('~')
-              
         if 'AcctBal' in list1:
+                          
             bal = str(list1['AcctBal'])
             decimal = False
-            for i in bal:
-                if i == '.':
-                    newFile.write(bal)
-                    decimal = True
-                    # break
+            if bal != "0":
+
+                newFile.write(list1['LicenseNo'])
+                newFile.write('~')
                 
-            if decimal == False:
-                newFile.write(bal + '.00')
+                for i in bal:
+                    if i == '.':
+                        newFile.write(bal)
+                        decimal = True
+                    
+                if decimal == False:
+                    newFile.write(bal + '.00')
 
-        else:
-            newFile.write('0.00')
 
-        newFile.write('|')
+                newFile.write('|')
 
         count = count + 1
 
         
-
-# with open('data.json') as json_file:
-#     data = json.load(json_file)
-
-#     submitted_data = data
-
-#     monthly_file = open('monthly_file.csv', 'w')
-
-#     csv_writer = csv.writer(monthly_file)
-
-#     count = 0
-
-#     for i in submitted_data:
-#         if count == 0:
-#             header = submitted_data[0].keys()
-#             csv_writer.writerow(header)
-#             count += 1
-#         linedata = submitted_data[i].values()
-#         csv_writer.writerow([linedata])
 
     monthly_file.close()
